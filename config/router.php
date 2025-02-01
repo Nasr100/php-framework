@@ -1,5 +1,6 @@
 <?php
-
+use config\Route;
+use config\Factory;
 class Router{
     private static $router = null;
     private function __construct(private $routes = []){}
@@ -14,25 +15,27 @@ class Router{
 
     public function get($uri,$controller,$action){
         
-       $this->add("GET",$uri,$controller,$action);
+       return $this->add("GET",$uri,$controller,$action);
     }
     public  function post($uri,$controller,$action){
-       $this->add("POST",$uri,$controller,$action);
+      return  $this->add("POST",$uri,$controller,$action);
     }
     public  function delete($uri,$controller,$action){
-       $this->add("DELETE",$uri,$controller,$action);
+      return $this->add("DELETE",$uri,$controller,$action);
     }
     public  function put($uri,$controller,$action){
-       $this->add("PUT",$uri,$controller,$action);
+       return $this->add("PUT",$uri,$controller,$action);
     }
     private function add($method,$uri,$controller,$action){
-        if(!isset($this->routes[$method])) $this->routes[$method] = [];
-        $pattern = preg_replace('/{(\w+)}/', '(?P<$1>\w+)', $uri);
-        $this->routes[$method][$pattern] = 
+        $route = new Route($method,$uri,$controller,$action); 
+        if(!isset($this->routes[$route->getMethod()])) $this->routes[$route->getMethod()] = [];
+        $pattern = preg_replace('/{(\w+)}/', '(?P<$1>\w+)', $route->getUri());
+        $this->routes[$route->getMethod()][$pattern] = 
         [
-            "controller" => $controller,
-            "action" => $action,
+            "controller" => $route->getController(),
+            "action" => $route->getAction(),
         ];
+        return $route;
     }
 
     public function route($method,$uri){
@@ -41,7 +44,7 @@ class Router{
         if(!isset($result)){
             abort("route Not found");
         }
-
+        Factory::createRequest();
         $controller = $result["controller"];
         $action = $result["action"];
         if(class_exists($controller)){

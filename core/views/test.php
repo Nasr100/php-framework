@@ -7,12 +7,14 @@
     <title>Document</title>
 </head>
 <body>
-    <h2>Add user</h2>
-    <form action="http://localhost/test/" method="post">
-        <input type="text" name="nom">
-        <input type="text" name="prenom">
-        <button type="submit">add</button>
+    <h2>Users</h2>
+   
 
-    </form>
+
+    <ul>
+        <li><?php echo $nom ?></li>
+        <li><?php echo $prenom ?></li>
+    </ul>
+   
 </body>
 </html>

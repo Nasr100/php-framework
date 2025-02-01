@@ -1,4 +1,5 @@
 <?php
+namespace config;
 class Route{
     protected $controller;
     protected $action;
