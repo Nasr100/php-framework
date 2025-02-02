@@ -11,10 +11,10 @@
    
 
 
-    <ul>
+    <!-- <ul>
         <li><?php echo $nom ?></li>
         <li><?php echo $prenom ?></li>
-    </ul>
+    </ul> -->
    
 </body>
 </html>

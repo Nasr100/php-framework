@@ -14,8 +14,11 @@
         <button type="submit">add</button>
 
     </form>
-
-
+    
+    <?php foreach ($users as $user) {
+        echo "user $user->id : $user->nom ,$user->prenom ,$user->age <br>" ;
+    }    
+    ?>
    
    
 </body>

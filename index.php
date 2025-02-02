@@ -1,7 +1,8 @@
 <?php
+use config\DB;
   require "./config/router.php";
   require "./config/helpers.php";
-  require "./config/DB.php";
+  // require "./config/DB.php";
 const BASE_PATH = __DIR__ ;
 
 spl_autoload_register(function($class){
@@ -14,7 +15,7 @@ spl_autoload_register(function($class){
 }
 });
 try {
-  $bd = dbConnection::getConx("mysql:host=localhost;port=3309;dbname=test","root","");
+  $bd = DB::getConx();
 } catch ( PDOException $e) {
   echo $e->getMessage() ."<br>";
   echo $e->getTraceAsString();
