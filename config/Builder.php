@@ -9,20 +9,22 @@ class Builder{
     
     private $table;
     private $columns = [];
-    private $conditions ;
-    private $sqlQuery = "";
+    private $conditions =[];
+    private $sqlQuery ;
+    private $values = [];
     private $result;
     public function __construct($table){
-        $this->conditions = new ArrayObject(array());
+        $this->sqlQuery = "";
         $this->table = $table;
     }
 
     public function where($column,$value,$eq = "="){
         if(count($this->conditions) > 0){
-            $this->conditions->append( ["AND",$column,$eq,$value]);
+            array_push( $this->conditions,["AND",$column,$eq,'?']);
         }else{
-            $this->conditions->append( [$column,$eq,$value]);
+            array_push( $this->conditions,[$column,$eq,'?']);
         }
+        array_push($this->values,$value);
         return $this;
     }
     public function get(){
@@ -39,16 +41,16 @@ class Builder{
             }
         }
         $finalQuery = "SELECT $columns from $this->table".$this->sqlQuery;
-        echo $finalQuery;
         try{
             $statement = DB::getConx()->prepare($finalQuery);
-            $statement->execute();
+            $statement->execute($this->values);
             $this->result =   $statement->fetchAll(PDO::FETCH_OBJ);
         }catch(PDOException $e){
-            $e->getMessage();
+            echo $e->getMessage();
         }
         return $this->result;
     }
+
 }
 
 ?>
